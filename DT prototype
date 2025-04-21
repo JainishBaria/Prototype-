@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sleep Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 500px;
+      background-color: white;
+      padding: 2rem;
+      margin-top: 4rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      width: 100%;
+      background-color: #4caf50;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #43a047;
+    }
+
+    .result {
+      margin-top: 2rem;
+      font-size: 1rem;
+      background-color: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sleep Stage Tracker</h1>
+
+    <label for="nrem1">Non-REM 1 (Drowsy Sleep) – in hours:</label>
+    <input type="number" id="nrem1" min="0" step="0.1" />
+
+    <label for="nrem2">Non-REM 2 (Light Sleep) – in hours:</label>
+    <input type="number" id="nrem2" min="0" step="0.1" />
+
+    <label for="nrem3">Non-REM 3 (Deep Sleep) – in hours:</label>
+    <input type="number" id="nrem3" min="0" step="0.1" />
+
+    <label for="rem">REM (Dream Sleep) – in hours:</label>
+    <input type="number" id="rem" min="0" step="0.1" />
+
+    <button onclick="analyzeSleep()">Analyze Sleep</button>
+
+    <div class="result" id="output"></div>
+  </div>
+
+  <script>
+    function analyzeSleep() {
+      const n1 = parseFloat(document.getElementById("nrem1").value) || 0;
+      const n2 = parseFloat(document.getElementById("nrem2").value) || 0;
+      const n3 = parseFloat(document.getElementById("nrem3").value) || 0;
+      const rem = parseFloat(document.getElementById("rem").value) || 0;
+
+      const totalHours = n1 + n2 + n3 + rem;
+      const totalMinutes = totalHours * 60;
+
+      let result = `<strong>Total Sleep:</strong> ${totalHours.toFixed(2)} hours (${Math.round(totalMinutes)} minutes)<br><br>`;
+
+      if (totalHours < 6) {
+        result += "You're not getting enough sleep. Aim for 7–9 hours per night.<br>";
+      } else {
+        result += "Total sleep duration is within a healthy range.<br>";
+      }
+
+      if (n3 * 60 < 60) {
+        result += "Deep Sleep (Non-REM 3) is too low. Try calming bedtime routines, less caffeine, and more exercise.<br>";
+      } else {
+        result += "Deep Sleep (Non-REM 3) is healthy. Great for body repair and recovery.<br>";
+      }
+
+      if (rem * 60 < 90) {
+        result += "REM (Dream Sleep) is on the lower side. Try avoiding screens before bed and maintain a consistent schedule.<br>";
+      } else {
+        result += "REM (Dream Sleep) is in a good range. Boosts memory and mental processing.<br>";
+      }
+
+      if (n2 * 60 > totalMinutes * 0.5) {
+        result += "Light Sleep (Non-REM 2) is high. Consider stress reduction and better sleep hygiene.<br>";
+      }
+
+      document.getElementById("output").innerHTML = result;
+    }
+  </script>
+</body>
+</html>
